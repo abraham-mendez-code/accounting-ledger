@@ -61,12 +61,14 @@ public class Transaction {
 
     }
 
-    // these are the getters for the class attributes
+    // these are the getters for the class attributes, read only
     public LocalDate getLocalDate() {
+        localDate = LocalDate.parse(this.date, dateFormatter);
         return localDate;
     }
 
     public LocalTime getLocalTime() {
+        localTime = LocalTime.parse(this.time, timeFormatter);
         return localTime;
     }
 

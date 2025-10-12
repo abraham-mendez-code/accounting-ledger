@@ -1,6 +1,8 @@
 package com.pluralsight;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Reports {
 
@@ -32,6 +34,39 @@ public class Reports {
         return payments;
     }
 
+    public static ArrayList<Transaction> sortByRecent (ArrayList<Transaction> ledger) {
 
+        // this loop will only end if date and time of each element and each sequential element
+        for (int i = 0; i < ledger.size() - 1; i++) {
+            /*
+                this compares the date of the current transaction to the date of the next transaction using ChronoLocalDate.compareTo()
+                compareTo returns -1  if the first comparator is less then the second and 1 if the first comparator is greater than the second
+                the most recent date will be greater than the others
+             */
+
+            // create a variable to store the combined localdatetime of the current transaction
+            LocalDateTime combinedTimeOne = LocalDateTime.of(ledger.get(i).getLocalDate(), ledger.get(i).getLocalTime());
+
+            // create a variable to store the combined localdatetime of the next transaction
+            LocalDateTime combinedTimeTwo = LocalDateTime.of(ledger.get(i + 1).getLocalDate(), ledger.get(i + 1).getLocalTime());
+
+            /*
+                this compares the date of the current transaction to the date of the next transaction using ChronoLocalDate.compareTo()
+                compareTo returns -1  if the first comparator is less then the second and 1 if the first comparator is greater than the second
+                the most recent date will be greater than the others
+             */
+
+            if (combinedTimeOne.compareTo(combinedTimeTwo) < 0) {
+                // swap the transactions to put the most recent first
+                Collections.swap(ledger, i, i + 1); // swap the current element with the next one
+                i = 0; // reset the loop
+            } else {
+                i++; // this element will only increase if the list is properly sorted
+            }
+
+        }
+
+        return ledger;
+    }
 
 }
