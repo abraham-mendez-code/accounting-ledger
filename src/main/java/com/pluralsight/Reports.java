@@ -1,10 +1,7 @@
 package com.pluralsight;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Reports {
 
@@ -39,7 +36,7 @@ public class Reports {
     }
 
     // this method returns an arraylist of transactions filtered by date range
-    public static ArrayList<Transaction> getTransactionsByDate(ArrayList<Transaction> ledger, LocalDate startDate, LocalDate endDate) {
+    public static ArrayList<Transaction> getByDate(ArrayList<Transaction> ledger, LocalDate startDate, LocalDate endDate) {
         ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
 
         // for each transaction checks if the is between the startDate or endDate, inclusive
@@ -56,6 +53,17 @@ public class Reports {
 
         return sortedLedger;
 
+    }
+
+    public static ArrayList<Transaction> getByVendor(ArrayList<Transaction> ledger, String vendor) {
+        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
+
+        for (Transaction t: ledger) {
+            if (t.getVendor().equals(vendor) )
+                sortedLedger.add(t);
+        }
+
+        return sortedLedger;
     }
 
     // this method returns an arraylist of transactions sorted by date and time
