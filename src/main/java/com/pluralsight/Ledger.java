@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Ledger {
 
     // Declare class attributes
-    private ArrayList<Transaction> transactions;
+    private ArrayList<Transaction> ledger;
     private double currentBalance;
 
     // this string stores the file path
@@ -37,14 +37,18 @@ public class Ledger {
             Transaction transaction = new Transaction(date, time, description, vendor, amount);
 
             // add the transaction to the ledger
-            transactions.add(transaction);
+            ledger.add(transaction);
         }
 
 
     }
 
-    private static void getTransactions() {
+    public double getCurrentBalance() {
+        return currentBalance;
+    }
 
+    public ArrayList<Transaction> getLedger() {
+        return ledger;
     }
 
 }
