@@ -14,6 +14,7 @@ public class Transaction {
     // Declare and initialize LocalDate and Local Time seperately, I do this to make formating other times easier
     private LocalDate localDate;
     private LocalTime localTime;
+    private LocalDateTime localDateTime;
 
     // declare and initialize formatters for the Local date and time
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -33,9 +34,11 @@ public class Transaction {
 
     // this constructor creates a new transaction to write
     public Transaction(String description, String vendor, double amount) {
-        // set the localDate and localTime to now for this transaction instance
-        this.localDate = LocalDate.now();
+        // set the localDate and localTime to now for this transaction instance, localTime goes first for accuracy.
         this.localTime = LocalTime.now();
+        this.localDate = LocalDate.now();
+
+        this.localDateTime = LocalDateTime.of(localDate,localTime);
 
         // apply the formatters and store it as String values for this instance
         this.date = localDate.format(dateFormatter);
@@ -70,6 +73,10 @@ public class Transaction {
     public LocalTime getLocalTime() {
         localTime = LocalTime.parse(this.time, timeFormatter);
         return localTime;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
     public String getDescription() {
