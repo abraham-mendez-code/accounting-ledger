@@ -31,7 +31,7 @@ public class Transaction {
     // Declare and initialize String variable for transactions.csv directory
     private static final String filePath = "transactions.csv";
 
-    // this is a Transaction constructor which initializes all class attributes
+    // this constructor creates a new transaction to write
     public Transaction(String description, String vendor, double amount) {
         // set the localDate and localTime to now for this transaction instance
         this.localDate = LocalDate.now();
@@ -48,6 +48,16 @@ public class Transaction {
 
         // this adds the transaction to the csv file once it's created
         writeTransaction();
+
+    }
+
+    // this overloaded constructor creates a new transaction for use of class methods
+    public Transaction(String date, String time, String description, String vendor, double amount) {
+        this.date = date;
+        this.time = time;
+        this.description = description;
+        this.vendor = vendor;
+        this.amount = amount;
 
     }
 
