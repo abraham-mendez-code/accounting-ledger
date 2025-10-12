@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Ledger {
 
     // Declare class attributes
-    private ArrayList<Transaction> ledger;
+    private ArrayList<Transaction> ledger = new ArrayList<Transaction>();
     private double currentBalance;
 
     // this string stores the file path
@@ -24,7 +24,7 @@ public class Ledger {
         // this assigns the content of current line to a string and continues to read each line until its null
         while ( (currentLine = bufferedReader.readLine()) != null ) {
             // split the current line into tokens
-            String[] tokens = currentLine.split("|");
+            String[] tokens = currentLine.split("[|]");
 
             // this assigns the tokens to their respective variables
             String date = tokens[0];
@@ -39,7 +39,6 @@ public class Ledger {
             // add the transaction to the ledger
             ledger.add(transaction);
         }
-
 
     }
 
