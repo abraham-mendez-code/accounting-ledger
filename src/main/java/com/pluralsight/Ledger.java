@@ -37,8 +37,10 @@ public class Ledger {
             Transaction transaction = new Transaction(date, time, description, vendor, amount);
 
             // add the transaction to the ledger
-            ledger.add(transaction);
+            this.ledger.add(transaction);
         }
+
+        this.ledger = Reports.sortByRecent(this.ledger);
 
     }
 

@@ -1,12 +1,14 @@
 package com.pluralsight;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LedgerApp {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void home() throws InterruptedException {
+    public static void home() throws InterruptedException, IOException {
 
         String options = """
                 
@@ -29,7 +31,7 @@ public class LedgerApp {
                 payment();
                 break;
             case "l":
-                //
+                ledger();
                 break;
             case "x":
                 System.exit(0);
@@ -105,6 +107,45 @@ public class LedgerApp {
         Transaction deposit = new Transaction(description, vendor, amount);
 
         System.out.printf("Deposit for %s made from %s for $%.2f\n", description, vendor, amount);
+
+    }
+
+    public static void ledger() throws IOException {
+        String options = """
+                The following options are available
+                    A) All - Display all entries
+                    D) Deposits - Display only deposits
+                    P) Payments - Display only payments
+                    R) Reports - Run custom reports
+                    H) Home - Return to the homepage
+                Enter a command:
+                """;
+
+        System.out.println(options);
+
+        String command = scanner.nextLine().substring(0,1).toLowerCase();
+
+        Ledger ledger = new Ledger();
+
+        switch (command) {
+            case "a":
+                //show(ledger);
+                break;
+            case "d":
+                // show only deposits
+                break;
+            case "p":
+                // show only payments
+                break;
+            case "r":
+                // go to a reports screen
+                break;
+            case "h":
+                // return home
+                break;
+            default:
+                // handle bad command input
+        }
 
     }
 

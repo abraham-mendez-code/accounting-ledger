@@ -114,21 +114,6 @@ public class Transaction {
         return amount;
     }
 
-    // These are the setters for the class attributes may not be needed, included for posterity
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-
     private void writeTransaction() {
 
         try {
