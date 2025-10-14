@@ -110,18 +110,18 @@ public class LedgerApp {
 
     }
 
-    public static void ledger() throws IOException {
+    public static void ledger() throws IOException, InterruptedException {
         String options = """
+                
                 The following options are available
                     A) All - Display all entries
                     D) Deposits - Display only deposits
                     P) Payments - Display only payments
                     R) Reports - Run custom reports
                     H) Home - Return to the homepage
-                Enter a command:
-                """;
+                Enter a command: """;
 
-        System.out.println(options);
+        System.out.print(options);
 
         String command = scanner.nextLine().substring(0,1).toLowerCase();
 
@@ -141,11 +141,14 @@ public class LedgerApp {
                 // go to a reports screen
                 break;
             case "h":
-                // return home
+                home();
                 break;
             default:
                 // handle bad command input
         }
+
+        Thread.sleep(1000);
+        ledger();
 
     }
 
