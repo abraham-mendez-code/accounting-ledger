@@ -19,7 +19,7 @@ public class LedgerApp {
                     P) Make Payment (Debit)
                     L) Ledger
                     X) Exit
-                Enter a command: """;
+                Enter a command:\s""";
 
         System.out.print(options);
 
@@ -121,7 +121,7 @@ public class LedgerApp {
                     P) Payments - Display only payments
                     R) Reports - Run custom reports
                     H) Home - Return to the homepage
-                Enter a command: """;
+                Enter a command:\s""";
 
         System.out.print(options);
 
@@ -143,6 +143,7 @@ public class LedgerApp {
                 break;
             case "r":
                 // go to a reports screen
+                reports();
                 break;
             case "h":
                 home();
@@ -154,6 +155,44 @@ public class LedgerApp {
         Thread.sleep(1000);
         ledger();
 
+    }
+
+    public static void reports() {
+
+        String options = """
+                
+                The following options are available
+                    1) Month to Date
+                    2) Previous Month
+                    3) Year to Date
+                    4) Previous Year
+                    5) Search by Vendor
+                    0) Back
+                Enter a command:\s""";
+
+        System.out.print(options);
+
+        try {
+            int command = Integer.parseInt(scanner.nextLine());
+
+            switch (command) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 0:
+                    ledger();
+            }
+        }
+        catch (NumberFormatException | IOException | InterruptedException e) {
+
+        }
     }
 
     public static void show(ArrayList<Transaction> ledger) throws IOException {
