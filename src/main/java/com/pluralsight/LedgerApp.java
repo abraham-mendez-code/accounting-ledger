@@ -149,4 +149,19 @@ public class LedgerApp {
 
     }
 
+    public static void show(Ledger ledger) {
+
+        ArrayList<Transaction> transactions = ledger.getLedger();
+
+        for (Transaction t: transactions) {
+            String date = t.getDate();
+            String time = t.getTime();
+            String description = t.getDescription();
+            String vendor = t.getVendor();
+            double amount = t.getAmount();
+
+            System.out.printf("%s|%s|%s|%s|$.2f", date, time, description, vendor, amount);
+        }
+
+    }
 }
