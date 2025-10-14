@@ -139,6 +139,7 @@ public class LedgerApp {
                 break;
             case "p":
                 // show only payments
+                show(Reports.getPayments(ledger));
                 break;
             case "r":
                 // go to a reports screen
