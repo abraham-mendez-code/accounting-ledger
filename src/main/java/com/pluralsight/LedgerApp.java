@@ -26,7 +26,7 @@ public class LedgerApp {
                 deposit();
                 break;
             case "p":
-                // payment();
+                payment();
                 break;
             case "l":
                 //
@@ -54,13 +54,46 @@ public class LedgerApp {
         while (true) {
             System.out.print("Enter an amount: ");
             try {
-                amount = Double.parseDouble(scanner.nextLine());
+                amount = Math.abs(Double.parseDouble(scanner.nextLine()));
 
                 if (amount > 0) {
                     break;
                 } else {
                     System.out.printf("$%.2f is not a valid deposit\n", amount);
                     Thread.sleep(1000);
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Enter a valid number");
+                Thread.sleep(1000);
+            }
+        }
+
+        Transaction deposit = new Transaction(description, vendor, amount);
+
+        System.out.printf("Deposit for %s made from %s for $%.2f\n", description, vendor, amount);
+
+    }
+
+    public static void payment() throws InterruptedException {
+
+        System.out.print("Enter a description(e.g The Big New Yorker Pizza): ");
+        String description = scanner.nextLine().trim();
+
+        System.out.print("Enter a vendor(e.g Pizza Hut): ");
+        String vendor = scanner.nextLine().trim();
+
+        double amount;
+
+        while (true) {
+            System.out.print("Enter an amount(e.g 13.99): ");
+            try {
+                amount = -1 * Math.abs(Double.parseDouble(scanner.nextLine()));
+
+                if (amount == 0) {
+                    System.out.println("Amount cannot be zero!");
+                } else {
+                    break;
                 }
             }
             catch (NumberFormatException e) {
