@@ -230,7 +230,22 @@ public class LedgerApp {
                     show(Reports.getByDate(ledger, afterDate, beforeDate));
                     break;
                 case 4:
+                    /*
+                        this assigns a start date LocalDate with the previous year (current year -1),
+                        the first month and the first day of the year
+                     */
+                    afterDate = LocalDate.of(today.getYear() - 1,
+                            1, 1);
 
+                    /*
+                        this assigns an end date LocalDate with the previous year (current year - 1),
+                        the last month and the last day of the year
+                     */
+                    beforeDate = LocalDate.of(today.getYear() - 1, 12
+                            , 31);
+
+                    // this shows a filtered ledger with transactions between the start and end date
+                    show(Reports.getByDate(ledger, afterDate, beforeDate));
                     break;
                 case 5:
 
