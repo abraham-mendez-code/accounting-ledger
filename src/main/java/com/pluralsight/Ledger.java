@@ -6,14 +6,18 @@ import java.util.ArrayList;
 public class Ledger {
 
     // Declare class attributes
-    private ArrayList<Transaction> ledger = new ArrayList<Transaction>();
+    private static ArrayList<Transaction> ledger = new ArrayList<Transaction>();
     private double currentBalance;
 
     // this string stores the file path
     private static final String filePath = "transactions.csv";
 
 
-    public Ledger() throws IOException {
+    public double getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public static ArrayList<Transaction> getLedger() throws IOException {
 
         // create a new bufferedReader to read from the file
         BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
@@ -37,18 +41,11 @@ public class Ledger {
             Transaction transaction = new Transaction(date, time, description, vendor, amount);
 
             // add the transaction to the ledger
-            this.ledger.add(transaction);
+            ledger.add(transaction);
         }
 
-        this.ledger = Reports.sortByRecent(this.ledger);
+        ledger = Reports.sortByRecent(ledger);
 
-    }
-
-    public double getCurrentBalance() {
-        return currentBalance;
-    }
-
-    public ArrayList<Transaction> getLedger() {
         return ledger;
     }
 

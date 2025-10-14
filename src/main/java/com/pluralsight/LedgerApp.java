@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static com.pluralsight.Ledger.getLedger;
+
 public class LedgerApp {
 
     private static Scanner scanner = new Scanner(System.in);
@@ -125,14 +127,15 @@ public class LedgerApp {
 
         String command = scanner.nextLine().substring(0,1).toLowerCase();
 
-        Ledger ledger = new Ledger();
+        ArrayList<Transaction> ledger = getLedger();
 
         switch (command) {
             case "a":
                 show(ledger);
                 break;
             case "d":
-                // show only deposits
+                //show only deposits
+                show(Reports.getDeposits(ledger));
                 break;
             case "p":
                 // show only payments
@@ -152,11 +155,10 @@ public class LedgerApp {
 
     }
 
-    public static void show(Ledger ledger) {
+    public static void show(ArrayList<Transaction> ledger) throws IOException {
 
-        ArrayList<Transaction> transactions = ledger.getLedger();
 
-        for (Transaction t: transactions) {
+        for (Transaction t: ledger) {
             String date = t.getDate();
             String time = t.getTime();
             String description = t.getDescription();
