@@ -36,15 +36,15 @@ public class Reports {
     }
 
     // this method returns an arraylist of transactions filtered by date range
-    public static ArrayList<Transaction> getByDate(ArrayList<Transaction> ledger, LocalDate startDate, LocalDate endDate) {
+    public static ArrayList<Transaction> getByDate(ArrayList<Transaction> ledger, LocalDate beforeDate, LocalDate afterDate) {
         ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
 
         // for each transaction checks if the is between the startDate or endDate, inclusive
         for (Transaction t: ledger){
             // if the date isAfter or isEqual to the start date...
-            if ( (t.getLocalDate()).isAfter(startDate) || (t.getLocalDate()).isEqual(startDate) ) {
+            if ( (t.getLocalDate()).isAfter(afterDate) || (t.getLocalDate()).isEqual(afterDate) ) {
                 // if the date isBefore or isEqual to the end date...
-                if ( (t.getLocalDate()).isBefore(endDate) || (t.getLocalDate().isEqual(endDate)) ) {
+                if ( (t.getLocalDate()).isBefore(beforeDate) || (t.getLocalDate().isEqual(beforeDate)) ) {
                     // add it to the sorted ledger
                     sortedLedger.add(t);
                 }

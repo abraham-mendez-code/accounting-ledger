@@ -1,9 +1,7 @@
 package com.pluralsight;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -180,38 +178,62 @@ public class LedgerApp {
         try {
             int command = Integer.parseInt(scanner.nextLine());
 
+            /*
+                Declare local date variables which will be used to filter
+                transactions chronologically, initialize today as today
+             */
             LocalDate today = LocalDate.now();
+            LocalDate afterDate;
+            LocalDate beforeDate;
 
             switch (command) {
                 case 1:
-                    LocalDate firstOfMonth = today.withDayOfMonth(1);
-                    show(Reports.getByDate(ledger, firstOfMonth, today));
+                    afterDate = today.withDayOfMonth(1);
+                    beforeDate = today;
+                    show(Reports.getByDate(ledger, afterDate, beforeDate));
                     Thread.sleep(1000);
                     break;
                 case 2:
                     /*
-                        this declares a start date LocalDate with the current year,
-                        the previous month (today's month - 1), and the 1st day of last month
+                        this assigns a start date LocalDate with the current year,
+                        the previous month (current month - 1), and the 1st day of last month
                      */
-                    LocalDate startDate = LocalDate.of(today.getYear(),
+                    afterDate = LocalDate.of(today.getYear(),
                             today.getMonthValue() - 1, 1);
 
                     /*
-                        this declares an end date LocalDate with the current year,
-                        the previous month (today's month - 1) and the last day of last month
+                        this assigns an end date LocalDate with the current year,
+                        the previous month (current month - 1) and the last day of last month
                      */
-                    LocalDate endDate = LocalDate.of(today.getYear(), today.getMonthValue() - 1
+                    beforeDate = LocalDate.of(today.getYear(), today.getMonthValue() - 1
                             , (today.withMonth(today.getMonthValue() - 1)).lengthOfMonth());
 
                     // this shows a filtered ledger with transactions between the start and end date
-                    show(Reports.getByDate(ledger, startDate, endDate));
+                    show(Reports.getByDate(ledger, afterDate, beforeDate));
                     Thread.sleep(1000);
                     break;
                 case 3:
+                    /*
+                        this assigns a start date LocalDate with the previous year (current year -1),
+                        the current month and the current date
+                     */
+                    afterDate = today;
+
+                    /*
+                        this assigns an end date LocalDate with the previous year (current year - 1),
+                        the last month and the last day of the year
+                     */
+                    beforeDate = LocalDate.of(today.getYear(), 12
+                            , 31);
+
+                    // this shows a filtered ledger with transactions between the start and end date
+                    show(Reports.getByDate(ledger, afterDate, beforeDate));
                     break;
                 case 4:
+
                     break;
                 case 5:
+
                     break;
                 case 0:
                     ledgerScreen();
