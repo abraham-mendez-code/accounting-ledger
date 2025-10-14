@@ -11,7 +11,7 @@ public class LedgerApp {
 
     private static ArrayList<Transaction> ledger;
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void homeScreen() throws InterruptedException, IOException {
 
@@ -248,7 +248,9 @@ public class LedgerApp {
                     show(Reports.getByDate(ledger, afterDate, beforeDate));
                     break;
                 case 5:
-
+                    System.out.print("Enter the name of the vendor: ");
+                    String vendor = scanner.nextLine();
+                    show(Reports.getByVendor(ledger, vendor));
                     break;
                 case 0:
                     ledgerScreen();

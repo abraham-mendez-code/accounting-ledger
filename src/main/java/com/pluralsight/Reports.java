@@ -8,7 +8,7 @@ public class Reports {
     // this method returns an arraylist of transactions filtered by deposits
     public static ArrayList<Transaction> getDeposits(ArrayList<Transaction> ledger) {
         // create new arraylist with only deposits
-        ArrayList<Transaction> deposits = new ArrayList<Transaction>();
+        ArrayList<Transaction> deposits = new ArrayList<>();
 
         // for each transaction in the ledger, if the amount is greater than zero, it's a deposit, add it to the list.
         for (Transaction t: ledger) {
@@ -23,7 +23,7 @@ public class Reports {
     // this method returns an arraylist of transactions filtered by payments
     public static ArrayList<Transaction> getPayments(ArrayList<Transaction> ledger) {
         // create a new array list with only payments
-        ArrayList<Transaction> payments = new ArrayList<Transaction>();
+        ArrayList<Transaction> payments = new ArrayList<>();
 
         // for each transaction in the ledger, if the amount is less than zero, it's a payment, add it to the list
         for (Transaction t: ledger){
@@ -37,7 +37,7 @@ public class Reports {
 
     // this method returns an arraylist of transactions filtered by date range
     public static ArrayList<Transaction> getByDate(ArrayList<Transaction> ledger, LocalDate beforeDate, LocalDate afterDate) {
-        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
+        ArrayList<Transaction> sortedLedger = new ArrayList<>();
 
         // for each transaction checks if the is between the startDate or endDate, inclusive
         for (Transaction t: ledger){
@@ -56,10 +56,10 @@ public class Reports {
     }
 
     public static ArrayList<Transaction> getByVendor(ArrayList<Transaction> ledger, String vendor) {
-        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
+        ArrayList<Transaction> sortedLedger = new ArrayList<>();
 
         for (Transaction t: ledger) {
-            if (t.getVendor().equals(vendor) )
+            if (t.getVendor().equalsIgnoreCase(vendor) )
                 sortedLedger.add(t);
         }
 
