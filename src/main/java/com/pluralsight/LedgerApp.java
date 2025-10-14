@@ -59,7 +59,7 @@ public class LedgerApp {
                 if (amount > 0) {
                     break;
                 } else {
-                    System.out.printf("$.2f is not a valid deposit", amount);
+                    System.out.printf("$%.2f is not a valid deposit\n", amount);
                     Thread.sleep(1000);
                 }
             }
