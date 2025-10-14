@@ -180,13 +180,32 @@ public class LedgerApp {
         try {
             int command = Integer.parseInt(scanner.nextLine());
 
+            LocalDate today = LocalDate.now();
+
             switch (command) {
                 case 1:
-                    LocalDate today = LocalDate.now();
                     LocalDate firstOfMonth = today.withDayOfMonth(1);
                     show(Reports.getByDate(ledger, firstOfMonth, today));
+                    Thread.sleep(1000);
                     break;
                 case 2:
+                    /*
+                        this declares a start date LocalDate with the current year,
+                        the previous month (today's month - 1), and the 1st day of last month
+                     */
+                    LocalDate startDate = LocalDate.of(today.getYear(),
+                            today.getMonthValue() - 1, 1);
+
+                    /*
+                        this declares an end date LocalDate with the current year,
+                        the previous month (today's month - 1) and the last day of last month
+                     */
+                    LocalDate endDate = LocalDate.of(today.getYear(), today.getMonthValue() - 1
+                            , (today.withMonth(today.getMonthValue() - 1)).lengthOfMonth());
+
+                    // this shows a filtered ledger with transactions between the start and end date
+                    show(Reports.getByDate(ledger, startDate, endDate));
+                    Thread.sleep(1000);
                     break;
                 case 3:
                     break;
@@ -203,6 +222,7 @@ public class LedgerApp {
             Thread.sleep(1000);
             reports();
         }
+        reports();
     }
 
     public static void show(ArrayList<Transaction> ledger) throws IOException {
