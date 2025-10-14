@@ -1,6 +1,9 @@
 package com.pluralsight;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,9 +11,11 @@ import static com.pluralsight.Ledger.getLedger;
 
 public class LedgerApp {
 
+    private static ArrayList<Transaction> ledger;
+
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void home() throws InterruptedException, IOException {
+    public static void homeScreen() throws InterruptedException, IOException {
 
         String options = """
                 
@@ -33,14 +38,14 @@ public class LedgerApp {
                 payment();
                 break;
             case "l":
-                ledger();
+                ledgerScreen();
                 break;
             case "x":
                 System.exit(0);
             default:
                 System.out.println("Invalid Selection!");
                 Thread.sleep(1000);
-                home();
+                homeScreen();
         }
 
     }
@@ -112,7 +117,7 @@ public class LedgerApp {
 
     }
 
-    public static void ledger() throws IOException, InterruptedException {
+    public static void ledgerScreen() throws IOException, InterruptedException {
         String options = """
                 
                 The following options are available
@@ -127,7 +132,7 @@ public class LedgerApp {
 
         String command = scanner.nextLine().substring(0,1).toLowerCase();
 
-        ArrayList<Transaction> ledger = getLedger();
+        ledger = getLedger();
 
         switch (command) {
             case "a":
@@ -146,18 +151,18 @@ public class LedgerApp {
                 reports();
                 break;
             case "h":
-                home();
+                homeScreen();
                 break;
             default:
                 // handle bad command input
         }
 
         Thread.sleep(1000);
-        ledger();
+        ledgerScreen();
 
     }
 
-    public static void reports() {
+    public static void reports() throws InterruptedException {
 
         String options = """
                 
@@ -177,6 +182,9 @@ public class LedgerApp {
 
             switch (command) {
                 case 1:
+                    LocalDate today = LocalDate.now();
+                    LocalDate firstOfMonth = today.withDayOfMonth(1);
+                    show(Reports.getByDate(ledger, firstOfMonth, today));
                     break;
                 case 2:
                     break;
@@ -187,11 +195,13 @@ public class LedgerApp {
                 case 5:
                     break;
                 case 0:
-                    ledger();
+                    ledgerScreen();
             }
         }
         catch (NumberFormatException | IOException | InterruptedException e) {
-
+            System.out.println("Enter a number");
+            Thread.sleep(1000);
+            reports();
         }
     }
 
