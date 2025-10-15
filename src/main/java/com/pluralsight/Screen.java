@@ -29,13 +29,12 @@ public class Screen extends Reports {
         switch (command) {
             case "d":
                 Transaction.deposit();
-                break;
+                homeScreen();
             case "p":
                 Transaction.payment();
-                break;
+                homeScreen();
             case "l":
                 ledgerScreen();
-                break;
             case "x":
                 System.exit(0);
             default:
