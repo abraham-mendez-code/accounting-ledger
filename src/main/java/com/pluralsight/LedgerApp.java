@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.pluralsight.Ledger.getLedger;
 
@@ -80,7 +82,7 @@ public class LedgerApp {
                 break;
             case "r":
                 // go to a reports screen
-                reportsScreen();
+                reportsScreen(ledger);
                 break;
             case "h":
                 homeScreen();
@@ -94,7 +96,7 @@ public class LedgerApp {
 
     }
 
-    public static void reportsScreen() throws InterruptedException {
+    public static void reportsScreen(ArrayList<Transaction> ledger) throws InterruptedException {
 
         String options = """
                 
@@ -118,89 +120,80 @@ public class LedgerApp {
                 transactions chronologically, initialize today as today
              */
             LocalDate today = LocalDate.now();
-            LocalDate afterDate;
-            LocalDate beforeDate;
+            LocalDate beforeDate = today;
+            LocalDate afterDate = LocalDate.MIN;
 
 
-            String vendor;
-            String description;
-            double minAmount;
-            double maxAmount;
+            String vendor = "";
+            String description = "";
+            double minAmount = 0;
+            double maxAmount = Double.MAX_VALUE;
 
 
             switch (command) {
                 case 1:
                     afterDate = today.withDayOfMonth(1);
                     beforeDate = today;
-                    show(Reports.filterByDateRange(ledger, afterDate, beforeDate));
-                    Thread.sleep(1000);
                     break;
                 case 2:
                     /*
                         this assigns a start date LocalDate with the current year,
                         the previous month (current month - 1), and the 1st day of last month
                      */
-                    afterDate = LocalDate.of(today.getYear(),
+                    beforeDate = LocalDate.of(today.getYear(),
                             today.getMonthValue() - 1, 1);
 
                     /*
                         this assigns an end date LocalDate with the current year,
                         the previous month (current month - 1) and the last day of last month
                      */
-                    beforeDate = LocalDate.of(today.getYear(), today.getMonthValue() - 1
+                    afterDate = LocalDate.of(today.getYear(), today.getMonthValue() - 1
                             , (today.withMonth(today.getMonthValue() - 1)).lengthOfMonth());
 
-                    // this shows a filtered ledger with transactions between the start and end date
-                    show(Reports.filterByDateRange(ledger, afterDate, beforeDate));
-                    Thread.sleep(1000);
                     break;
                 case 3:
                     /*
                         this assigns a start date LocalDate with the previous year (current year -1),
                         the current month and the current date
                      */
-                    afterDate = today;
+                    beforeDate = today;
 
                     /*
                         this assigns an end date LocalDate with the previous year (current year - 1),
                         the last month and the last day of the year
                      */
-                    beforeDate = LocalDate.of(today.getYear(), 12
+                    afterDate = LocalDate.of(today.getYear(), 12
                             , 31);
-
-                    // this shows a filtered ledger with transactions between the start and end date
-                    show(Reports.filterByDateRange(ledger, afterDate, beforeDate));
                     break;
                 case 4:
                     /*
                         this assigns a start date LocalDate with the previous year (current year -1),
                         the first month and the first day of the year
                      */
-                    afterDate = LocalDate.of(today.getYear() - 1,
+                    beforeDate = LocalDate.of(today.getYear() - 1,
                             1, 1);
 
                     /*
                         this assigns an end date LocalDate with the previous year (current year - 1),
                         the last month and the last day of the year
                      */
-                    beforeDate = LocalDate.of(today.getYear() - 1, 12
+                    afterDate = LocalDate.of(today.getYear() - 1, 12
                             , 31);
-
-                    // this shows a filtered ledger with transactions between the start and end date
-                    show(Reports.filterByDateRange(ledger, afterDate, beforeDate));
                     break;
                 case 5:
                     System.out.print("Enter the vendor name: ");
                     vendor = scanner.nextLine();
-                    show(Reports.filterByVendor(ledger, vendor));
                     break;
                 case 6:
-                    /* This section is a WIP while I update Reports to use lambdas
+
+                    // this prompts a user for optional input and trims the string value before storing it in a variable
                     System.out.println("Enter a start date (MM-dd-yyyy leave blank if n/a)");
-                    beforeDate = LocalDate.parse(scanner.nextLine());
+                    String beforeDateInput = scanner.nextLine().trim();
+                    beforeDate = beforeDateInput.isEmpty() ? LocalDate.now() : LocalDate.parse(beforeDateInput);
 
                     System.out.println("Enter a end date (MM-dd-yyyy leave blank if n/a)");
-                    afterDate = LocalDate.parse(scanner.nextLine());
+                    String afterDateInput = scanner.nextLine().trim();
+                    afterDate = afterDateInput.isEmpty() ? LocalDate.MIN : LocalDate.parse(afterDateInput);
 
                     System.out.println("Enter a description (leave blank if n/a)");
                     description = scanner.nextLine().trim();
@@ -209,31 +202,26 @@ public class LedgerApp {
                     vendor = scanner.nextLine().trim();
 
                     System.out.println("Enter a minimum amount (leave blank if n/a)");
-                    minAmount = Double.parseDouble(scanner.nextLine());
+                    String minAmountInput = scanner.nextLine();
+                    minAmount = minAmountInput.isEmpty() ? 0 : Double.parseDouble(minAmountInput);
 
                     System.out.println("Enter a maximum amount (leave blank if n/a)");
-                    maxAmount = Double.parseDouble(scanner.nextLine());
-
-
-                    ArrayList<Transaction> customSearch = new ArrayList<>();
-
-                    if (!description.isEmpty()) {
-                        //customSearch.addAll(Reports.filterByDescription());
-                    }
-
-                */
+                    String maxAmountInput = scanner.nextLine();
+                    maxAmount = maxAmountInput.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxAmountInput);
                     break;
                 case 0:
                     ledgerScreen();
             }
+            show(Reports.search(ledger, afterDate, beforeDate, description, vendor, maxAmount, minAmount));
         }
         catch (NumberFormatException | IOException | InterruptedException e) {
             System.out.println("Enter a number");
             Thread.sleep(1000);
-            reportsScreen();
+            reportsScreen(ledger);
         }
-        reportsScreen();
+        reportsScreen(ledger);
     }
+
 
     public static void show(ArrayList<Transaction> ledger) throws IOException, InterruptedException {
 
@@ -248,7 +236,10 @@ public class LedgerApp {
             System.out.printf("%s|%s|%s|%s|%.2f\n", date, time, description, vendor, amount);
         }
 
-            Thread.sleep(1000);
+        if (ledger.isEmpty())
+            System.out.println("No transactions match your search.");
+
+        Thread.sleep(1000);
     }
 
 }

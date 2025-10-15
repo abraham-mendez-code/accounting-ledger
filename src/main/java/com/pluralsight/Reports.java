@@ -37,6 +37,25 @@ public class Reports {
         return payments;
     }
 
+    public static ArrayList<Transaction> search(ArrayList<Transaction> ledger,
+                                                LocalDate afterDate,
+                                                LocalDate beforeDate,
+                                                String description,
+                                                String vendor,
+                                                double maxAmount,
+                                                double minAmount) {
+
+        ArrayList<Transaction> results = (ArrayList<Transaction>) ledger.stream()
+                .filter(t ->  description.isEmpty() || t.getDescription().toLowerCase().contains(description.toLowerCase()))
+                .filter(t ->  vendor.isEmpty() || t.getVendor().toLowerCase().contains(vendor.toLowerCase()))
+                .filter(t ->  maxAmount >= Math.abs(t.getAmount()) && minAmount <= Math.abs(t.getAmount()) )
+                .filter(t -> t.getLocalDate().isAfter(afterDate) || t.getLocalDate().isEqual(afterDate) )
+                .filter(t -> t.getLocalDate().isBefore(beforeDate) || t.getLocalDate().isEqual(beforeDate))
+                .collect(Collectors.toList());
+
+        return sortByRecent(results);
+    }
+
     // this method returns an arraylist of transactions filtered by date range
     public static ArrayList<Transaction> filterByDateRange(ArrayList<Transaction> ledger, LocalDate beforeDate, LocalDate afterDate) {
 
@@ -69,7 +88,7 @@ public class Reports {
     public static ArrayList<Transaction> filterByAmount(ArrayList<Transaction> ledger, double minAmount, double maxAmount) {
 
         return (ArrayList<Transaction>) ledger.stream()
-                .filter(t -> t.getAmount() >= minAmount && t.getAmount() <= maxAmount)
+                .filter(t -> Math.abs(t.getAmount()) >= minAmount && Math.abs(t.getAmount()) <= maxAmount)
                 .collect(Collectors.toList());
 
 
