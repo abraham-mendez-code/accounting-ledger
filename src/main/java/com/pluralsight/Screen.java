@@ -13,6 +13,12 @@ public class Screen extends Reports {
 
     public void homeScreen() throws InterruptedException, IOException {
 
+        String header = """
+                +===================+
+                |    Home Screen    |
+                +===================+
+                """;
+
         String options = """
                 
                 The following options are available
