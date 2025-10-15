@@ -1,7 +1,10 @@
 package com.pluralsight;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,17 +14,27 @@ public class Screen extends Reports {
 
     private static Scanner scanner = new Scanner(System.in);
 
+    // declare and initialize formatters for the Local date and time
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+
     public void homeScreen() throws InterruptedException, IOException {
 
         String header = """
-                    
-                    +==============+
-                    |     Home     |
-                    +==============+
-                    
+
+                 ('-. .-.             _   .-')       ('-. \s
+                ( OO )  /            ( '.( OO )_   _(  OO)\s
+                ,--. ,--. .-'),-----. ,--.   ,--.)(,------.
+                |  | |  |( OO'  .-.  '|   `.'   |  |  .---'
+                |   .|  |/   |  | |  ||         |  |  |   \s
+                |       |\\_) |  |\\|  ||  |'.'|  | (|  '--.\s
+                |  .-.  |  \\ |  | |  ||  |   |  |  |  .--'\s
+                |  | |  |   `'  '-'  '|  |   |  |  |  `---.
+                `--' `--'     `-----' `--'   `--'  `------'
+                                
                 """;
 
         String options = """
+                Choose from the following options
                 D) Add Sale
                 P) Add Expense
                 L) Transactions page
@@ -35,9 +48,11 @@ public class Screen extends Reports {
         switch (command) {
             case "d":
                 Transaction.deposit();
+                scanner.nextLine();
                 homeScreen();
             case "p":
                 Transaction.payment();
+                scanner.nextLine();
                 homeScreen();
             case "l":
                 ledgerScreen();
@@ -45,7 +60,7 @@ public class Screen extends Reports {
                 System.exit(0);
             default:
                 System.out.println("Invalid Selection!");
-                Thread.sleep(1000);
+                Thread.sleep(2000);
                 homeScreen();
         }
 
@@ -53,19 +68,26 @@ public class Screen extends Reports {
 
     public void ledgerScreen() throws IOException, InterruptedException {
         String header = """
-                
-                    +==============+
-                    |    Ledger    |
-                    +==============+
+
+                             ('-.  _ .-') _                 ('-.  _  .-') \s
+                           _(  OO)( (  OO) )              _(  OO)( \\( -O )\s
+                 ,--.     (,------.\\     .'_   ,----.    (,------.,------.\s
+                 |  |.-')  |  .---',`'--..._) '  .-./-')  |  .---'|   /`. '
+                 |  | OO ) |  |    |  |  \\  ' |  |_( O- ) |  |    |  /  | |
+                 |  |`-' |(|  '--. |  |   ' | |  | .--, \\(|  '--. |  |_.' |
+                (|  '---.' |  .--' |  |   / :(|  | '. (_/ |  .--' |  .  '.'
+                 |      |  |  `---.|  '--'  / |  '--'  |  |  `---.|  |\\  \\\s
+                 `------'  `------'`-------'   `------'   `------'`--' '--'
                 
                 """;
 
         String options = """
-                A) All - Display all entries
-                D) Restaurant Sales - Display only sales
-                P) Restaurant Expenses - Display only expenses
-                R) Reports - Run custom reports
-                H) Home - Return to the homepage
+                Choose from the following options
+                A) All Transactions
+                D) Restaurant Sales
+                P) Restaurant Expenses
+                R) Run a Report
+                H) Home
                 Enter a command:\s""";
 
         System.out.print(header + options);
@@ -96,21 +118,27 @@ public class Screen extends Reports {
                 // handle bad command input
         }
 
-        Thread.sleep(1000);
         ledgerScreen();
 
     }
 
     public void reportsScreen() throws InterruptedException {
         String header = """
-                
-                    +===============+
-                    |    Reports    |
-                    +===============+
-                
+
+                 _  .-')     ('-.     _ (`-.              _  .-')   .-') _     .-')  \s
+                ( \\( -O )  _(  OO)   ( (OO  )            ( \\( -O ) (  OO) )   ( OO ).\s
+                 ,------. (,------. _.`     \\ .-'),-----. ,------. /     '._ (_)---\\_)
+                 |   /`. ' |  .---'(__...--''( OO'  .-.  '|   /`. '|'--...__)/    _ |\s
+                 |  /  | | |  |     |  /  | |/   |  | |  ||  /  | |'--.  .--'\\  :` `.\s
+                 |  |_.' |(|  '--.  |  |_.' |\\_) |  |\\|  ||  |_.' |   |  |    '..`''.)
+                 |  .  '.' |  .--'  |  .___.'  \\ |  | |  ||  .  '.'   |  |   .-._)   \\
+                 |  |\\  \\  |  `---. |  |        `'  '-'  '|  |\\  \\    |  |   \\       /
+                 `--' '--' `------' `--'          `-----' `--' '--'   `--'    `-----'\s
+                                
                 """;
 
         String options = """
+                Choose from the following options
                 1) Month to Date
                 2) Previous Month
                 3) Year to Date
@@ -197,13 +225,13 @@ public class Screen extends Reports {
                 case 6:
 
                     // this prompts a user for optional input and trims the string value before storing it in a variable
-                    System.out.println("Enter a start date (MM-dd-yyyy leave blank if n/a)");
+                    System.out.println("From which date? (e.g MM-dd-yyyy) leave blank if n/a");
                     String beforeDateInput = scanner.nextLine().trim();
-                    beforeDate = beforeDateInput.isEmpty() ? LocalDate.now() : LocalDate.parse(beforeDateInput);
+                    beforeDate = beforeDateInput.isEmpty() ? LocalDate.now() : LocalDate.parse(beforeDateInput, dateFormatter);
 
-                    System.out.println("Enter a end date (MM-dd-yyyy leave blank if n/a)");
+                    System.out.println("To which date? (MM-dd-yyyy) leave blank if n/a");
                     String afterDateInput = scanner.nextLine().trim();
-                    afterDate = afterDateInput.isEmpty() ? LocalDate.MIN : LocalDate.parse(afterDateInput);
+                    afterDate = afterDateInput.isEmpty() ? LocalDate.MIN : LocalDate.parse(afterDateInput, dateFormatter);
 
                     System.out.println("Enter a description (leave blank if n/a)");
                     description = scanner.nextLine().trim();
@@ -225,8 +253,8 @@ public class Screen extends Reports {
             show(search(afterDate, beforeDate, description, vendor, maxAmount, minAmount));
         }
         catch (NumberFormatException | IOException | InterruptedException e) {
-            System.out.println("Enter a number");
-            Thread.sleep(1000);
+            System.out.println("Invalid input detected. Enter a number 0-6");
+            Thread.sleep(2000);
             reportsScreen();
         }
         reportsScreen();
@@ -251,7 +279,7 @@ public class Screen extends Reports {
         else
             System.out.println(ledger.size() + " entries with matching criteria.");
         ledger.clear();
-        Thread.sleep(1000);
+        scanner.nextLine();
     }
 
 }
