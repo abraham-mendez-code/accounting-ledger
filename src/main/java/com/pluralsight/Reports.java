@@ -67,19 +67,11 @@ public class Reports {
 
     // this method returns an arraylist of transactions filtered by amount
     public static ArrayList<Transaction> filterByAmount(ArrayList<Transaction> ledger, double minAmount, double maxAmount) {
-        // declare a new arraylist to store a sorted ledger
-        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
 
-        // this loop goes through each transaction and add it to the sortedLedger if the amount is in range of min and max values
-        for (Transaction t: ledger){
+        return (ArrayList<Transaction>) ledger.stream()
+                .filter(t -> t.getAmount() >= minAmount && t.getAmount() <= maxAmount)
+                .collect(Collectors.toList());
 
-            if (t.getAmount() >= minAmount && t.getAmount() <= maxAmount ) {
-                sortedLedger.add(t);
-            }
-
-        }
-
-        return sortedLedger;
 
     }
 
