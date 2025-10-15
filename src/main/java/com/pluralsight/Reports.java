@@ -46,7 +46,7 @@ public class Reports {
                 .collect(Collectors.toList());
     }
 
-    // this method returns an arraylist of transactions filtered by vendor
+    // this method returns an arraylist of transactions filtered by vendor using lambda
     public static ArrayList<Transaction> filterByVendor(ArrayList<Transaction> ledger, String vendor) {
         if (vendor.isEmpty()) return ledger;
         return (ArrayList<Transaction>) ledger.stream()
