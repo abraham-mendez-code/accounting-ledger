@@ -14,22 +14,21 @@ public class Screen extends Reports {
     public void homeScreen() throws InterruptedException, IOException {
 
         String header = """
-                +==============+
-                |     Home     |
-                +==============+
-                
+                    
+                    +==============+
+                    |     Home     |
+                    +==============+
+                    
                 """;
 
         String options = """
-                
-                The following options are available
-                    D) Add Sale
-                    P) Add Expense
-                    L) Transactions page
-                    X) Exit
+                D) Add Sale
+                P) Add Expense
+                L) Transactions page
+                X) Exit
                 Enter a command:\s""";
 
-        System.out.print(options);
+        System.out.print(header + options);
 
         String command = scanner.nextLine().substring(0,1).toLowerCase();
 
@@ -54,23 +53,22 @@ public class Screen extends Reports {
 
     public void ledgerScreen() throws IOException, InterruptedException {
         String header = """
-                +==============+
-                |    Ledger    |
-                +==============+
+                
+                    +==============+
+                    |    Ledger    |
+                    +==============+
                 
                 """;
 
         String options = """
-                
-                The following options are available
-                    A) All - Display all entries
-                    D) Restaurant Sales - Display only sales
-                    P) Restaurant Expenses - Display only expenses
-                    R) Reports - Run custom reports
-                    H) Home - Return to the homepage
+                A) All - Display all entries
+                D) Restaurant Sales - Display only sales
+                P) Restaurant Expenses - Display only expenses
+                R) Reports - Run custom reports
+                H) Home - Return to the homepage
                 Enter a command:\s""";
 
-        System.out.print(options);
+        System.out.print(header + options);
 
         String command = scanner.nextLine().substring(0,1).toLowerCase();
 
@@ -105,25 +103,24 @@ public class Screen extends Reports {
 
     public void reportsScreen() throws InterruptedException {
         String header = """
-                +===============+
-                |    Reports    |
-                +===============+
+                
+                    +===============+
+                    |    Reports    |
+                    +===============+
                 
                 """;
 
         String options = """
-                
-                The following options are available
-                    1) Month to Date
-                    2) Previous Month
-                    3) Year to Date
-                    4) Previous Year
-                    5) Search by Vendor
-                    6) Custom Search
-                    0) Back
+                1) Month to Date
+                2) Previous Month
+                3) Year to Date
+                4) Previous Year
+                5) Search by Vendor
+                6) Custom Search
+                0) Back
                 Enter a command:\s""";
 
-        System.out.print(options);
+        System.out.print(header + options);
 
         try {
             int command = Integer.parseInt(scanner.nextLine());
