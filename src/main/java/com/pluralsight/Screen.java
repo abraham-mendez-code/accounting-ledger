@@ -14,18 +14,18 @@ public class Screen extends Reports {
     public void homeScreen() throws InterruptedException, IOException {
 
         String header = """
-                +===================+
-                |    Home Screen    |
-                +===================+
+                +==============+
+                |     Home     |
+                +==============+
                 
                 """;
 
         String options = """
                 
                 The following options are available
-                    D) Add Deposit
-                    P) Make Payment (Debit)
-                    L) Ledger
+                    D) Add Sale
+                    P) Add Expense
+                    L) Transactions page
                     X) Exit
                 Enter a command:\s""";
 
@@ -54,9 +54,9 @@ public class Screen extends Reports {
 
     public void ledgerScreen() throws IOException, InterruptedException {
         String header = """
-                +=====================+
-                |    Ledger Screen    |
-                +=====================+
+                +==============+
+                |    Ledger    |
+                +==============+
                 
                 """;
 
@@ -64,8 +64,8 @@ public class Screen extends Reports {
                 
                 The following options are available
                     A) All - Display all entries
-                    D) Deposits - Display only deposits
-                    P) Payments - Display only payments
+                    D) Restaurant Sales - Display only sales
+                    P) Restaurant Expenses - Display only expenses
                     R) Reports - Run custom reports
                     H) Home - Return to the homepage
                 Enter a command:\s""";
@@ -104,6 +104,12 @@ public class Screen extends Reports {
     }
 
     public void reportsScreen() throws InterruptedException {
+        String header = """
+                +===============+
+                |    Reports    |
+                +===============+
+                
+                """;
 
         String options = """
                 
