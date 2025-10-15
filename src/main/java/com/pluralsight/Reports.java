@@ -36,15 +36,15 @@ public class Reports {
     }
 
     // this method returns an arraylist of transactions filtered by date range
-    public static ArrayList<Transaction> getByDate(ArrayList<Transaction> ledger, LocalDate beforeDate, LocalDate afterDate) {
+    public static ArrayList<Transaction> filterByDateRange(ArrayList<Transaction> ledger, LocalDate startDate, LocalDate endDate) {
         ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
 
         // for each transaction checks if the is between the startDate or endDate, inclusive
         for (Transaction t: ledger){
             // if the date isAfter or isEqual to the start date...
-            if ( (t.getLocalDate()).isAfter(afterDate) || (t.getLocalDate()).isEqual(afterDate) ) {
+            if ( (t.getLocalDate()).isAfter(startDate) || (t.getLocalDate()).isEqual(startDate) ) {
                 // if the date isBefore or isEqual to the end date...
-                if ( (t.getLocalDate()).isBefore(beforeDate) || (t.getLocalDate().isEqual(beforeDate)) ) {
+                if ( (t.getLocalDate()).isBefore(endDate) || (t.getLocalDate().isEqual(endDate)) ) {
                     // add it to the sorted ledger
                     sortedLedger.add(t);
                 }
@@ -55,7 +55,8 @@ public class Reports {
 
     }
 
-    public static ArrayList<Transaction> getByVendor(ArrayList<Transaction> ledger, String vendor) {
+    // this method returns an arraylist of transactions filtered by vendor
+    public static ArrayList<Transaction> filterByVendor(ArrayList<Transaction> ledger, String vendor) {
         ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
 
         for (Transaction t: ledger) {
@@ -64,6 +65,38 @@ public class Reports {
         }
 
         return sortedLedger;
+    }
+
+    // this method returns an arraylist of transactions filtered by description
+    public static ArrayList<Transaction> filterByDescription(ArrayList<Transaction> ledger, String description) {
+
+        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
+
+        for (Transaction t: ledger) {
+            if (t.getDescription().equals(description) )
+                sortedLedger.add(t);
+        }
+
+        return sortedLedger;
+
+    }
+
+    // this method returns an arraylist of transactions filtered by amount
+    public static ArrayList<Transaction> filterByAmount(ArrayList<Transaction> ledger, double minAmount, double maxAmount) {
+        // declare a new arraylist to store a sorted ledger
+        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
+
+        // this loop goes through each transaction and add it to the sortedLedger if the amount is in range of min and max values
+        for (Transaction t: ledger){
+
+            if (t.getAmount() >= minAmount && t.getAmount() <= maxAmount ) {
+                sortedLedger.add(t);
+            }
+
+        }
+
+        return sortedLedger;
+
     }
 
     // this method returns an arraylist of transactions sorted by date and time
