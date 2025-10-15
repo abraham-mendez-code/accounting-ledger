@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import static com.pluralsight.Ledger.getLedger;
 
+
 public class LedgerApp {
 
     private static ArrayList<Transaction> ledger;
@@ -30,10 +31,10 @@ public class LedgerApp {
 
         switch (command) {
             case "d":
-                deposit();
+                Transaction.deposit();
                 break;
             case "p":
-                payment();
+                Transaction.payment();
                 break;
             case "l":
                 ledgerScreen();
@@ -45,73 +46,6 @@ public class LedgerApp {
                 Thread.sleep(1000);
                 homeScreen();
         }
-
-    }
-
-    public static void deposit() throws InterruptedException {
-
-        System.out.print("Enter a description(e.g Invoice 66 paid): ");
-        String description = scanner.nextLine().trim();
-
-        System.out.print("Enter a vendor(e.g Sheev): ");
-        String vendor = scanner.nextLine().trim();
-
-        double amount;
-
-        while (true) {
-            System.out.print("Enter an amount: ");
-            try {
-                amount = Math.abs(Double.parseDouble(scanner.nextLine()));
-
-                if (amount > 0) {
-                    break;
-                } else {
-                    System.out.printf("$%.2f is not a valid deposit\n", amount);
-                    Thread.sleep(1000);
-                }
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Enter a valid number");
-                Thread.sleep(1000);
-            }
-        }
-
-        Transaction deposit = new Transaction(description, vendor, amount);
-
-        System.out.printf("Deposit for %s made from %s for $%.2f\n", description, vendor, amount);
-
-    }
-
-    public static void payment() throws InterruptedException {
-
-        System.out.print("Enter a description(e.g The Big New Yorker Pizza): ");
-        String description = scanner.nextLine().trim();
-
-        System.out.print("Enter a vendor(e.g Pizza Hut): ");
-        String vendor = scanner.nextLine().trim();
-
-        double amount;
-
-        while (true) {
-            System.out.print("Enter an amount(e.g 13.99): ");
-            try {
-                amount = -1 * Math.abs(Double.parseDouble(scanner.nextLine()));
-
-                if (amount == 0) {
-                    System.out.println("Amount cannot be zero!");
-                } else {
-                    break;
-                }
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Enter a valid number");
-                Thread.sleep(1000);
-            }
-        }
-
-        Transaction deposit = new Transaction(description, vendor, amount);
-
-        System.out.printf("Deposit for %s made from %s for $%.2f\n", description, vendor, amount);
 
     }
 
@@ -146,7 +80,7 @@ public class LedgerApp {
                 break;
             case "r":
                 // go to a reports screen
-                reports();
+                reportsScreen();
                 break;
             case "h":
                 homeScreen();
@@ -160,7 +94,7 @@ public class LedgerApp {
 
     }
 
-    public static void reports() throws InterruptedException {
+    public static void reportsScreen() throws InterruptedException {
 
         String options = """
                 
@@ -170,6 +104,7 @@ public class LedgerApp {
                     3) Year to Date
                     4) Previous Year
                     5) Search by Vendor
+                    6) Custom Search
                     0) Back
                 Enter a command:\s""";
 
@@ -186,11 +121,18 @@ public class LedgerApp {
             LocalDate afterDate;
             LocalDate beforeDate;
 
+
+            String vendor;
+            String description;
+            double minAmount;
+            double maxAmount;
+
+
             switch (command) {
                 case 1:
                     afterDate = today.withDayOfMonth(1);
                     beforeDate = today;
-                    show(Reports.getByDate(ledger, afterDate, beforeDate));
+                    show(Reports.filterByDateRange(ledger, afterDate, beforeDate));
                     Thread.sleep(1000);
                     break;
                 case 2:
@@ -209,7 +151,7 @@ public class LedgerApp {
                             , (today.withMonth(today.getMonthValue() - 1)).lengthOfMonth());
 
                     // this shows a filtered ledger with transactions between the start and end date
-                    show(Reports.getByDate(ledger, afterDate, beforeDate));
+                    show(Reports.filterByDateRange(ledger, afterDate, beforeDate));
                     Thread.sleep(1000);
                     break;
                 case 3:
@@ -227,7 +169,7 @@ public class LedgerApp {
                             , 31);
 
                     // this shows a filtered ledger with transactions between the start and end date
-                    show(Reports.getByDate(ledger, afterDate, beforeDate));
+                    show(Reports.filterByDateRange(ledger, afterDate, beforeDate));
                     break;
                 case 4:
                     /*
@@ -245,10 +187,41 @@ public class LedgerApp {
                             , 31);
 
                     // this shows a filtered ledger with transactions between the start and end date
-                    show(Reports.getByDate(ledger, afterDate, beforeDate));
+                    show(Reports.filterByDateRange(ledger, afterDate, beforeDate));
                     break;
                 case 5:
+                    System.out.print("Enter the vendor name: ");
+                    vendor = scanner.nextLine();
+                    show(Reports.filterByVendor(ledger, vendor));
+                    break;
+                case 6:
+                    /* This section is a WIP while I update Reports to use lambdas
+                    System.out.println("Enter a start date (MM-dd-yyyy leave blank if n/a)");
+                    beforeDate = LocalDate.parse(scanner.nextLine());
 
+                    System.out.println("Enter a end date (MM-dd-yyyy leave blank if n/a)");
+                    afterDate = LocalDate.parse(scanner.nextLine());
+
+                    System.out.println("Enter a description (leave blank if n/a)");
+                    description = scanner.nextLine().trim();
+
+                    System.out.println("Enter a vendor (leave blank if n/a");
+                    vendor = scanner.nextLine().trim();
+
+                    System.out.println("Enter a minimum amount (leave blank if n/a)");
+                    minAmount = Double.parseDouble(scanner.nextLine());
+
+                    System.out.println("Enter a maximum amount (leave blank if n/a)");
+                    maxAmount = Double.parseDouble(scanner.nextLine());
+
+
+                    ArrayList<Transaction> customSearch = new ArrayList<>();
+
+                    if (!description.isEmpty()) {
+                        //customSearch.addAll(Reports.filterByDescription());
+                    }
+
+                */
                     break;
                 case 0:
                     ledgerScreen();
@@ -257,12 +230,12 @@ public class LedgerApp {
         catch (NumberFormatException | IOException | InterruptedException e) {
             System.out.println("Enter a number");
             Thread.sleep(1000);
-            reports();
+            reportsScreen();
         }
-        reports();
+        reportsScreen();
     }
 
-    public static void show(ArrayList<Transaction> ledger) throws IOException {
+    public static void show(ArrayList<Transaction> ledger) throws IOException, InterruptedException {
 
 
         for (Transaction t: ledger) {
@@ -275,6 +248,7 @@ public class LedgerApp {
             System.out.printf("%s|%s|%s|%s|%.2f\n", date, time, description, vendor, amount);
         }
 
+            Thread.sleep(1000);
     }
 
 }

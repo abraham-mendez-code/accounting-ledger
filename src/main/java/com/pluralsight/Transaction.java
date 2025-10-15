@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class Transaction {
 
@@ -19,6 +20,8 @@ public class Transaction {
     // declare and initialize formatters for the Local date and time
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+    private static Scanner scanner = new Scanner(System.in);
 
     // apply the formatter and store the result as a string
     private String date;
@@ -48,9 +51,6 @@ public class Transaction {
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
-
-        // this adds the transaction to the csv file once it's created
-        writeTransaction();
 
     }
 
@@ -114,14 +114,88 @@ public class Transaction {
         return amount;
     }
 
-    private void writeTransaction() {
+    // this method gets transaction information for a deposit and writes it to the ledger
+    public static void deposit() throws InterruptedException {
+
+        System.out.print("Enter a description(e.g Invoice 66 paid): ");
+        String description = scanner.nextLine().trim();
+
+        System.out.print("Enter a vendor(e.g Sheev): ");
+        String vendor = scanner.nextLine().trim();
+
+        double amount;
+
+        while (true) {
+            System.out.print("Enter an amount: ");
+            try {
+                amount = Math.abs(Double.parseDouble(scanner.nextLine()));
+
+                if (amount > 0) {
+                    break;
+                } else {
+                    System.out.printf("$%.2f is not a valid deposit\n", amount);
+                    Thread.sleep(1000);
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Enter a valid number");
+                Thread.sleep(1000);
+            }
+        }
+
+        Transaction deposit = new Transaction(description, vendor, amount);
+
+        writeTransaction(deposit);
+
+        System.out.printf("Deposit for %s made from %s for $%.2f\n", description, vendor, amount);
+
+    }
+
+    // this method get transaction information for a payment and writes it to the ledger
+    public static void payment() throws InterruptedException {
+
+        System.out.print("Enter a description(e.g The Big New Yorker Pizza): ");
+        String description = scanner.nextLine().trim();
+
+        System.out.print("Enter a vendor(e.g Pizza Hut): ");
+        String vendor = scanner.nextLine().trim();
+
+        double amount;
+
+        while (true) {
+            System.out.print("Enter an amount(e.g 13.99): ");
+            try {
+                amount = -1 * Math.abs(Double.parseDouble(scanner.nextLine()));
+
+                if (amount == 0) {
+                    System.out.println("Amount cannot be zero!");
+                } else {
+                    break;
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Enter a valid number");
+                Thread.sleep(1000);
+            }
+        }
+
+        Transaction payment = new Transaction(description, vendor, amount);
+
+        writeTransaction(payment);
+
+        System.out.printf("Payment for %s made from %s for $%.2f\n", description, vendor, amount);
+
+    }
+
+    // this method writes a transaction to a file
+    private static void writeTransaction(Transaction t) {
 
         try {
             // this creates a new bufferedWriter, when declaring a new FileWriter pass true in order to append to the end of the file instead of overwriting
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true));
 
             // convert the transaction info into a string
-            String transaction = String.format("%s|%s|%s|%s|%.2f", this.date, this.time, this.description, this.vendor, this.amount);
+            String transaction = String.format("%s|%s|%s|%s|%.2f", t.date, t.time, t.description, t.vendor, t.amount);
 
             // write the transaction and go to a new line
             bufferedWriter.write(transaction);

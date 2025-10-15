@@ -1,7 +1,9 @@
 package com.pluralsight;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Reports {
 
@@ -36,48 +38,30 @@ public class Reports {
     }
 
     // this method returns an arraylist of transactions filtered by date range
-    public static ArrayList<Transaction> filterByDateRange(ArrayList<Transaction> ledger, LocalDate startDate, LocalDate endDate) {
-        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
+    public static ArrayList<Transaction> filterByDateRange(ArrayList<Transaction> ledger, LocalDate beforeDate, LocalDate afterDate) {
 
-        // for each transaction checks if the is between the startDate or endDate, inclusive
-        for (Transaction t: ledger){
-            // if the date isAfter or isEqual to the start date...
-            if ( (t.getLocalDate()).isAfter(startDate) || (t.getLocalDate()).isEqual(startDate) ) {
-                // if the date isBefore or isEqual to the end date...
-                if ( (t.getLocalDate()).isBefore(endDate) || (t.getLocalDate().isEqual(endDate)) ) {
-                    // add it to the sorted ledger
-                    sortedLedger.add(t);
-                }
-            }
-        }
-
-        return sortedLedger;
-
+        return (ArrayList<Transaction>) ledger.stream()
+                .filter(t -> (beforeDate == null || !t.getLocalDate().isBefore(beforeDate)))
+                .filter(t -> (afterDate == null || !t.getLocalDate().isAfter(afterDate)))
+                .collect(Collectors.toList());
     }
 
     // this method returns an arraylist of transactions filtered by vendor
     public static ArrayList<Transaction> filterByVendor(ArrayList<Transaction> ledger, String vendor) {
-        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
+        if (vendor.isEmpty()) return ledger;
+        return (ArrayList<Transaction>) ledger.stream()
+                .filter(t -> (t.getVendor().toLowerCase().contains(vendor.toLowerCase())))
+                .collect(Collectors.toList());
 
-        for (Transaction t: ledger) {
-            if (t.getVendor().equals(vendor) )
-                sortedLedger.add(t);
-        }
-
-        return sortedLedger;
     }
 
     // this method returns an arraylist of transactions filtered by description
     public static ArrayList<Transaction> filterByDescription(ArrayList<Transaction> ledger, String description) {
 
-        ArrayList<Transaction> sortedLedger = new ArrayList<Transaction>();
-
-        for (Transaction t: ledger) {
-            if (t.getDescription().equals(description) )
-                sortedLedger.add(t);
-        }
-
-        return sortedLedger;
+        if (description.isEmpty()) return ledger;
+        return (ArrayList<Transaction>) ledger.stream()
+                .filter(t -> (t.getDescription().toLowerCase().contains(description.toLowerCase())))
+                .collect(Collectors.toList());
 
     }
 
