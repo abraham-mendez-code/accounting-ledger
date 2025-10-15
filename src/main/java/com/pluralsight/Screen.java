@@ -17,6 +17,7 @@ public class Screen extends Reports {
                 +===================+
                 |    Home Screen    |
                 +===================+
+                
                 """;
 
         String options = """
@@ -52,6 +53,13 @@ public class Screen extends Reports {
     }
 
     public void ledgerScreen() throws IOException, InterruptedException {
+        String header = """
+                +=====================+
+                |    Ledger Screen    |
+                +=====================+
+                
+                """;
+
         String options = """
                 
                 The following options are available
