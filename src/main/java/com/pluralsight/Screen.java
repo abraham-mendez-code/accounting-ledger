@@ -191,12 +191,6 @@ public class Screen extends Reports {
                     break;
                 case 3:
                     /*
-                        this assigns a start date LocalDate with the previous year (current year -1),
-                        the current month and the current date
-                     */
-                    //beforeDate = today;
-
-                    /*
                         this assigns an end date LocalDate with the previous year (current year - 1),
                         the last month and the last day of the year
                      */
