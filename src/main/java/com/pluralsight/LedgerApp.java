@@ -140,14 +140,14 @@ public class LedgerApp {
                         this assigns a start date LocalDate with the current year,
                         the previous month (current month - 1), and the 1st day of last month
                      */
-                    beforeDate = LocalDate.of(today.getYear(),
+                    afterDate = LocalDate.of(today.getYear(),
                             today.getMonthValue() - 1, 1);
 
                     /*
                         this assigns an end date LocalDate with the current year,
                         the previous month (current month - 1) and the last day of last month
                      */
-                    afterDate = LocalDate.of(today.getYear(), today.getMonthValue() - 1
+                    beforeDate = LocalDate.of(today.getYear(), today.getMonthValue() - 1
                             , (today.withMonth(today.getMonthValue() - 1)).lengthOfMonth());
 
                     break;
@@ -156,28 +156,28 @@ public class LedgerApp {
                         this assigns a start date LocalDate with the previous year (current year -1),
                         the current month and the current date
                      */
-                    beforeDate = today;
+                    //beforeDate = today;
 
                     /*
                         this assigns an end date LocalDate with the previous year (current year - 1),
                         the last month and the last day of the year
                      */
-                    afterDate = LocalDate.of(today.getYear(), 12
-                            , 31);
+                    afterDate = LocalDate.of(today.getYear(), 1
+                            , 1);
                     break;
                 case 4:
                     /*
                         this assigns a start date LocalDate with the previous year (current year -1),
                         the first month and the first day of the year
                      */
-                    beforeDate = LocalDate.of(today.getYear() - 1,
+                    afterDate = LocalDate.of(today.getYear() - 1,
                             1, 1);
 
                     /*
                         this assigns an end date LocalDate with the previous year (current year - 1),
                         the last month and the last day of the year
                      */
-                    afterDate = LocalDate.of(today.getYear() - 1, 12
+                    beforeDate = LocalDate.of(today.getYear() - 1, 12
                             , 31);
                     break;
                 case 5:
@@ -238,7 +238,8 @@ public class LedgerApp {
 
         if (ledger.isEmpty())
             System.out.println("No transactions match your search.");
-
+        else
+            System.out.println(ledger.size() + " entries with matching criteria.");
         Thread.sleep(1000);
     }
 
