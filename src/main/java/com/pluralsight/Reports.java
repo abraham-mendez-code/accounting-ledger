@@ -1,51 +1,44 @@
 package com.pluralsight;
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+
 public class Reports {
+    // this string stores the file path
+    private static final String filePath = "transactions.csv";
 
     // this method returns an arraylist of transactions filtered by deposits
-    public static ArrayList<Transaction> getDeposits(ArrayList<Transaction> ledger) {
-        // create new arraylist with only deposits
-        ArrayList<Transaction> deposits = new ArrayList<Transaction>();
+    public ArrayList<Transaction> getDeposits() throws IOException {
 
-        // for each transaction in the ledger, if the amount is greater than zero, it's a deposit, add it to the list.
-        for (Transaction t: ledger) {
-            if (t.getAmount() > 0) {
-                deposits.add(t);
-            }
-        }
-        // return the deposits list
-        return deposits;
+        return (ArrayList<Transaction>) getLedger().stream()
+                .filter(t -> t.getAmount() > 0)
+                .collect(Collectors.toList());
+
     }
 
     // this method returns an arraylist of transactions filtered by payments
-    public static ArrayList<Transaction> getPayments(ArrayList<Transaction> ledger) {
-        // create a new array list with only payments
-        ArrayList<Transaction> payments = new ArrayList<Transaction>();
+    public ArrayList<Transaction> getPayments() throws IOException {
 
-        // for each transaction in the ledger, if the amount is less than zero, it's a payment, add it to the list
-        for (Transaction t: ledger){
-            if (t.getAmount() < 0) {
-                payments.add(t);
-            }
-        }
-        // return the payments list
-        return payments;
+        return (ArrayList<Transaction>) getLedger().stream()
+                .filter(t -> t.getAmount() < 0)
+                .collect(Collectors.toList());
     }
 
-    public static ArrayList<Transaction> search(ArrayList<Transaction> ledger,
+    public ArrayList<Transaction> search(
                                                 LocalDate afterDate,
                                                 LocalDate beforeDate,
                                                 String description,
                                                 String vendor,
                                                 double maxAmount,
-                                                double minAmount) {
+                                                double minAmount) throws IOException {
 
-        ArrayList<Transaction> results = (ArrayList<Transaction>) ledger.stream()
+        ArrayList<Transaction> results = (ArrayList<Transaction>) getLedger().stream()
                 .filter(t ->  description.isEmpty() || t.getDescription().toLowerCase().contains(description.toLowerCase()))
                 .filter(t ->  vendor.isEmpty() || t.getVendor().toLowerCase().contains(vendor.toLowerCase()))
                 .filter(t ->  maxAmount >= Math.abs(t.getAmount()) && minAmount <= Math.abs(t.getAmount()) )
@@ -56,46 +49,8 @@ public class Reports {
         return sortByRecent(results);
     }
 
-    // this method returns an arraylist of transactions filtered by date range
-    public static ArrayList<Transaction> filterByDateRange(ArrayList<Transaction> ledger, LocalDate beforeDate, LocalDate afterDate) {
-
-        return (ArrayList<Transaction>) ledger.stream()
-                .filter(t -> (beforeDate == null || !t.getLocalDate().isBefore(beforeDate)))
-                .filter(t -> (afterDate == null || !t.getLocalDate().isAfter(afterDate)))
-                .collect(Collectors.toList());
-    }
-
-    // this method returns an arraylist of transactions filtered by vendor using lambda
-    public static ArrayList<Transaction> filterByVendor(ArrayList<Transaction> ledger, String vendor) {
-        if (vendor.isEmpty()) return ledger;
-        return (ArrayList<Transaction>) ledger.stream()
-                .filter(t -> (t.getVendor().toLowerCase().contains(vendor.toLowerCase())))
-                .collect(Collectors.toList());
-
-    }
-
-    // this method returns an arraylist of transactions filtered by description
-    public static ArrayList<Transaction> filterByDescription(ArrayList<Transaction> ledger, String description) {
-
-        if (description.isEmpty()) return ledger;
-        return (ArrayList<Transaction>) ledger.stream()
-                .filter(t -> (t.getDescription().toLowerCase().contains(description.toLowerCase())))
-                .collect(Collectors.toList());
-
-    }
-
-    // this method returns an arraylist of transactions filtered by amount
-    public static ArrayList<Transaction> filterByAmount(ArrayList<Transaction> ledger, double minAmount, double maxAmount) {
-
-        return (ArrayList<Transaction>) ledger.stream()
-                .filter(t -> Math.abs(t.getAmount()) >= minAmount && Math.abs(t.getAmount()) <= maxAmount)
-                .collect(Collectors.toList());
-
-
-    }
-
     // this method returns an arraylist of transactions sorted by date and time
-    public static ArrayList<Transaction> sortByRecent (ArrayList<Transaction> ledger) {
+    public ArrayList<Transaction> sortByRecent (ArrayList<Transaction> ledger) {
 
         // this uses a lamba expression to sort the ledger
         // the parameters are two transactions t1 and t2
@@ -106,6 +61,39 @@ public class Reports {
         });
 
         return ledger;
+    }
+
+    public ArrayList<Transaction> getLedger() throws IOException {
+        ArrayList<Transaction> ledger = new ArrayList<Transaction>();
+
+        // create a new bufferedReader to read from the file
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+
+        // declare a string to hold the current line
+        String currentLine;
+
+        // this assigns the content of current line to a string and continues to read each line until its null
+        while ( (currentLine = bufferedReader.readLine()) != null ) {
+            // split the current line into tokens
+            String[] tokens = currentLine.split("[|]");
+
+            // this assigns the tokens to their respective variables
+            String date = tokens[0];
+            String time = tokens[1];
+            String description = tokens[2];
+            String vendor = tokens[3];
+            double amount = Double.parseDouble(tokens[4]);
+
+            // declare a new read only transaction
+            Transaction transaction = new Transaction(date, time, description, vendor, amount);
+
+            // add the transaction to the ledger
+            ledger.add(transaction);
+        }
+
+        return sortByRecent(ledger);
+
+
     }
 
 }
