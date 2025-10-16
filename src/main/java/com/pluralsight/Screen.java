@@ -267,35 +267,15 @@ public class Screen extends Reports {
                     System.out.println("Enter a vendor (leave blank if n/a");
                     vendor = scanner.nextLine().trim();
 
-                    // input validation for min amount
-                    while (true) {
-                        try {
-                            System.out.println("Enter a minimum amount (leave blank if n/a)");
-                            String minAmountInput = scanner.nextLine();
-                            minAmount = minAmountInput.isEmpty() ? 0 : Double.parseDouble(minAmountInput);
+                    while
+                    System.out.println("Enter a minimum amount (leave blank if n/a)");
+                    String minAmountInput = scanner.nextLine();
+                    minAmount = minAmountInput.isEmpty() ? 0 : Double.parseDouble(minAmountInput);
 
-                            // if input is valid break the loop
-                            break;
-                        }
-                        catch (NumberFormatException e) {
-                            System.out.println("Invalid input, only numbers allowed.");
-                            Thread.sleep(2000);
-                        }
-                    }
-
-                    // input validation for max amount
-                    while (true) {
-                        try {
-                            System.out.println("Enter a maximum amount (leave blank if n/a)");
-                            String maxAmountInput = scanner.nextLine();
-                            maxAmount = maxAmountInput.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxAmountInput);
-                            break;
-                        }
-                        catch (NumberFormatException e) {
-                            System.out.println("Invalid input, only numbers allowed.");
-                            Thread.sleep(2000);
-                        }
-                    }
+                    System.out.println("Enter a maximum amount (leave blank if n/a)");
+                    String maxAmountInput = scanner.nextLine();
+                    maxAmount = maxAmountInput.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxAmountInput);
+                    break;
                 case 0:
                     ledgerScreen();
             }
