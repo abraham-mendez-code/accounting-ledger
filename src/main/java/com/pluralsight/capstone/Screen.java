@@ -1,7 +1,5 @@
-package com.pluralsight;
+package com.pluralsight.capstone;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

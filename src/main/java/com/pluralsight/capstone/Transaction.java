@@ -1,6 +1,5 @@
-package com.pluralsight;
+package com.pluralsight.capstone;
 
-import javax.swing.text.DateFormatter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
