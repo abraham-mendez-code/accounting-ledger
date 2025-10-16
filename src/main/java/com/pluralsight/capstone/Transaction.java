@@ -116,10 +116,10 @@ public class Transaction {
     // this method gets transaction information for a deposit and writes it to the ledger
     public static void deposit() throws InterruptedException {
 
-        System.out.print("Enter a description(e.g Invoice 66 paid): ");
+        System.out.print("Enter a description(e.g The Big New Yorker Mega Slice): ");
         String description = scanner.nextLine().trim();
 
-        System.out.print("Enter a vendor(e.g Sheev): ");
+        System.out.print("Enter a vendor(e.g Akshan Malhotra): ");
         String vendor = scanner.nextLine().trim();
 
         double amount;
@@ -153,10 +153,10 @@ public class Transaction {
     // this method get transaction information for a payment and writes it to the ledger
     public static void payment() throws InterruptedException {
 
-        System.out.print("Enter a description(e.g The Big New Yorker Pizza): ");
+        System.out.print("Enter a description(e.g Invoice 66: ");
         String description = scanner.nextLine().trim();
 
-        System.out.print("Enter a vendor(e.g Pizza Hut): ");
+        System.out.print("Enter a vendor(e.g Sheev): ");
         String vendor = scanner.nextLine().trim();
 
         double amount;

@@ -37,7 +37,7 @@ public class Screen extends Reports {
                 Choose from the following options
                 D) Add Sale
                 P) Add Expense
-                L) Transactions page
+                L) Ledger page
                 X) Exit
                 Enter a command:\s""";
 
