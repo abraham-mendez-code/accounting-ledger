@@ -182,7 +182,7 @@ public class Transaction {
 
         writeTransaction(payment);
 
-        System.out.printf("Payment for %s made from %s for $%.2f\n", description, vendor, amount);
+        System.out.printf("Payment for %s made from %s for $%.2f\n", description, vendor, Math.abs(amount));
 
     }
 
