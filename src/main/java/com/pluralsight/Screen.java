@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -228,15 +229,37 @@ public class Screen extends Reports {
                     vendor = scanner.nextLine();
                     break;
                 case 6:
+                    // input validation for from date
+                    while(true) {
+                        try {
+                            // this prompts a user for optional input and trims the string value before storing it in a variable
+                            System.out.println("From which date? (e.g MM-dd-yyyy) leave blank if n/a");
+                            String beforeDateInput = scanner.nextLine().trim();
+                            beforeDate = beforeDateInput.isEmpty() ? LocalDate.now() : LocalDate.parse(beforeDateInput, dateFormatter); // check if the input is empty before parsing, if empty assign default value
 
-                    // this prompts a user for optional input and trims the string value before storing it in a variable
-                    System.out.println("From which date? (e.g MM-dd-yyyy) leave blank if n/a");
-                    String beforeDateInput = scanner.nextLine().trim();
-                    beforeDate = beforeDateInput.isEmpty() ? LocalDate.now() : LocalDate.parse(beforeDateInput, dateFormatter); // check if the input is empty before parsing, if empty assign default value
+                            // if it reaches this point with no errors, exit loop
+                            break;
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Invalid entry for the date.");
+                            Thread.sleep(2000);
+                        }
 
-                    System.out.println("To which date? (MM-dd-yyyy) leave blank if n/a");
-                    String afterDateInput = scanner.nextLine().trim();
-                    afterDate = afterDateInput.isEmpty() ? LocalDate.MIN : LocalDate.parse(afterDateInput, dateFormatter);
+                    }
+
+                    // input validation for to date
+                    while(true) {
+                        try {
+                            System.out.println("To which date? (MM-dd-yyyy) leave blank if n/a");
+                            String afterDateInput = scanner.nextLine().trim();
+                            afterDate = afterDateInput.isEmpty() ? LocalDate.MIN : LocalDate.parse(afterDateInput, dateFormatter);
+                            // if it reaches this point with no errors, exit loop
+                            break;
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Invalid entry for the date.");
+                            Thread.sleep(2000);
+                        }
+
+                    }
 
                     System.out.println("Enter a description (leave blank if n/a)");
                     description = scanner.nextLine().trim();
@@ -244,14 +267,35 @@ public class Screen extends Reports {
                     System.out.println("Enter a vendor (leave blank if n/a");
                     vendor = scanner.nextLine().trim();
 
-                    System.out.println("Enter a minimum amount (leave blank if n/a)");
-                    String minAmountInput = scanner.nextLine();
-                    minAmount = minAmountInput.isEmpty() ? 0 : Double.parseDouble(minAmountInput);
+                    // input validation for min amount
+                    while (true) {
+                        try {
+                            System.out.println("Enter a minimum amount (leave blank if n/a)");
+                            String minAmountInput = scanner.nextLine();
+                            minAmount = minAmountInput.isEmpty() ? 0 : Double.parseDouble(minAmountInput);
 
-                    System.out.println("Enter a maximum amount (leave blank if n/a)");
-                    String maxAmountInput = scanner.nextLine();
-                    maxAmount = maxAmountInput.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxAmountInput);
-                    break;
+                            // if input is valid break the loop
+                            break;
+                        }
+                        catch (NumberFormatException e) {
+                            System.out.println("Invalid input, only numbers allowed.");
+                            Thread.sleep(2000);
+                        }
+                    }
+
+                    // input validation for max amount
+                    while (true) {
+                        try {
+                            System.out.println("Enter a maximum amount (leave blank if n/a)");
+                            String maxAmountInput = scanner.nextLine();
+                            maxAmount = maxAmountInput.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxAmountInput);
+                            break;
+                        }
+                        catch (NumberFormatException e) {
+                            System.out.println("Invalid input, only numbers allowed.");
+                            Thread.sleep(2000);
+                        }
+                    }
                 case 0:
                     ledgerScreen();
             }
