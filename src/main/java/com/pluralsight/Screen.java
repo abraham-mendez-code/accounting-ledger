@@ -289,13 +289,18 @@ public class Screen extends Reports {
                             System.out.println("Enter a maximum amount (leave blank if n/a)");
                             String maxAmountInput = scanner.nextLine();
                             maxAmount = maxAmountInput.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxAmountInput);
+
+                            // exit loop after valid input is rcvd
                             break;
                         }
                         catch (NumberFormatException e) {
                             System.out.println("Invalid input, only numbers allowed.");
                             Thread.sleep(2000);
                         }
+
                     }
+
+                    break;
                 case 0:
                     ledgerScreen();
             }
