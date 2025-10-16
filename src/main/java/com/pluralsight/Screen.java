@@ -46,29 +46,31 @@ public class Screen extends Reports {
         System.out.print(header + options);
 
         // this reads the next line using scanner and gets the character between in index 0 and 1 (the first char) and stores it as a string
-        String command = scanner.nextLine().substring(0,1).toLowerCase();
+        String command = scanner.nextLine();
+        command = command.isEmpty() ? "" : command.substring(0,1).toLowerCase();
 
         // this switch reads the input command and a executes task or switches menus
         switch (command) {
             case "d":
                 Transaction.deposit(); // make a new deposit using the Transaction class
                 scanner.nextLine(); // wait for userinput to continue
-                homeScreen(); // show the homescreen again
+                break;
             case "p":
                 Transaction.payment();
                 scanner.nextLine();
-                homeScreen();
+                break;
             case "l":
                 ledgerScreen();
+                break;
             case "x":
                 System.exit(0);
             default:
                 // prints out an error message if the user enters an unfamiliar command and displays the homescreen after a delay
                 System.out.println("Invalid Selection!");
                 Thread.sleep(2000);
-                homeScreen();
+                break;
         }
-
+        homeScreen(); // show the homescreen again
     }
 
     // this method displays the ledger screen
@@ -98,7 +100,9 @@ public class Screen extends Reports {
 
         System.out.print(header + options);
 
-        String command = scanner.nextLine().substring(0,1).toLowerCase();
+        String command = scanner.nextLine();
+
+        command = command.isEmpty() ? "" : command.substring(0,1).toLowerCase();
 
         switch (command) {
             case "a":
@@ -123,8 +127,8 @@ public class Screen extends Reports {
                 // prints out an error message if the user enters an unfamiliar command and displays the homescreen after a delay
                 System.out.println("Invalid Selection!");
                 Thread.sleep(2000);
-                ledgerScreen();
         }
+        ledgerScreen();
     }
 
     // this method display the reports screen
