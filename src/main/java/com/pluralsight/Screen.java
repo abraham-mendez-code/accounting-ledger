@@ -322,6 +322,7 @@ public class Screen extends Reports {
             String vendor = t.getVendor();
             double amount = t.getAmount();
 
+            // print out each attribute in the same format as the .csv file
             System.out.printf("%s|%s|%s|%s|%.2f\n", date, time, description, vendor, amount);
         }
 
