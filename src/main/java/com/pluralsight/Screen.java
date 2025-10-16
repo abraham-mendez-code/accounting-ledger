@@ -12,11 +12,12 @@ import java.util.Scanner;
 
 public class Screen extends Reports {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in); // declare the scanner here so I don't have to do it in each method
 
-    // declare and initialize formatters for the Local date and time
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+    // declare and initialize formatters for the Local date and time here for visibility
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
+    // this method displays the homescreen for this application and accepts user inputs for traversal or completing tasks
     public void homeScreen() throws InterruptedException, IOException {
 
         String header = """
@@ -41,15 +42,18 @@ public class Screen extends Reports {
                 X) Exit
                 Enter a command:\s""";
 
+        // this prints out the menu header and options
         System.out.print(header + options);
 
+        // this reads the next line using scanner and gets the character between in index 0 and 1 (the first char) and stores it as a string
         String command = scanner.nextLine().substring(0,1).toLowerCase();
 
+        // this switch reads the input command and a executes task or switches menus
         switch (command) {
             case "d":
-                Transaction.deposit();
-                scanner.nextLine();
-                homeScreen();
+                Transaction.deposit(); // make a new deposit using the Transaction class
+                scanner.nextLine(); // wait for userinput to continue
+                homeScreen(); // show the homescreen again
             case "p":
                 Transaction.payment();
                 scanner.nextLine();
@@ -59,6 +63,7 @@ public class Screen extends Reports {
             case "x":
                 System.exit(0);
             default:
+                // prints out an error message if the user enters an unfamiliar command and displays the homescreen after a delay
                 System.out.println("Invalid Selection!");
                 Thread.sleep(2000);
                 homeScreen();
@@ -66,6 +71,7 @@ public class Screen extends Reports {
 
     }
 
+    // this method displays the ledger screen
     public void ledgerScreen() throws IOException, InterruptedException {
         String header = """
 
@@ -94,7 +100,6 @@ public class Screen extends Reports {
 
         String command = scanner.nextLine().substring(0,1).toLowerCase();
 
-
         switch (command) {
             case "a":
                 show(getLedger());
@@ -115,13 +120,14 @@ public class Screen extends Reports {
                 homeScreen();
                 break;
             default:
-                // handle bad command input
+                // prints out an error message if the user enters an unfamiliar command and displays the homescreen after a delay
+                System.out.println("Invalid Selection!");
+                Thread.sleep(2000);
+                ledgerScreen();
         }
-
-        ledgerScreen();
-
     }
 
+    // this method display the reports screen
     public void reportsScreen() throws InterruptedException {
         String header = """
 
@@ -162,6 +168,7 @@ public class Screen extends Reports {
             LocalDate afterDate = LocalDate.MIN;
 
 
+            // declare and initialize variables for custom searches
             String vendor = "";
             String description = "";
             double minAmount = 0;
@@ -221,7 +228,7 @@ public class Screen extends Reports {
                     // this prompts a user for optional input and trims the string value before storing it in a variable
                     System.out.println("From which date? (e.g MM-dd-yyyy) leave blank if n/a");
                     String beforeDateInput = scanner.nextLine().trim();
-                    beforeDate = beforeDateInput.isEmpty() ? LocalDate.now() : LocalDate.parse(beforeDateInput, dateFormatter);
+                    beforeDate = beforeDateInput.isEmpty() ? LocalDate.now() : LocalDate.parse(beforeDateInput, dateFormatter); // check if the input is empty before parsing, if empty assign default value
 
                     System.out.println("To which date? (MM-dd-yyyy) leave blank if n/a");
                     String afterDateInput = scanner.nextLine().trim();
@@ -244,6 +251,8 @@ public class Screen extends Reports {
                 case 0:
                     ledgerScreen();
             }
+
+            // this shows the search results
             show(search(afterDate, beforeDate, description, vendor, maxAmount, minAmount));
         }
         catch (NumberFormatException | IOException | InterruptedException e) {
@@ -257,7 +266,7 @@ public class Screen extends Reports {
 
     public static void show(ArrayList<Transaction> ledger) throws IOException, InterruptedException {
 
-
+        // this loop access each element in the ledger and prints its fields
         for (Transaction t: ledger) {
             String date = t.getDate();
             String time = t.getTime();
@@ -268,12 +277,16 @@ public class Screen extends Reports {
             System.out.printf("%s|%s|%s|%s|%.2f\n", date, time, description, vendor, amount);
         }
 
+        // if the ledger is empty print out a message otherwise print out the number of entries found
         if (ledger.isEmpty())
             System.out.println("No transactions match your search.");
         else
             System.out.println(ledger.size() + " entries with matching criteria.");
+        // clear the ledger to prevent appending on consecutive runs.
         ledger.clear();
+        // wait for user input to continue after display
         scanner.nextLine();
+
     }
 
 }
