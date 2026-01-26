@@ -1,4 +1,4 @@
-package com.pluralsight.capstone;
+package com.pluralsight.capstone.models;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -146,7 +146,7 @@ public class Transaction {
 
         writeTransaction(deposit);
 
-        System.out.printf("Deposit for %s made from %s for $%.2f\n", description, vendor, amount);
+        System.out.printf("Sale of %s made by %s for $%.2f\n", description, vendor, amount);
 
     }
 
@@ -182,7 +182,7 @@ public class Transaction {
 
         writeTransaction(payment);
 
-        System.out.printf("Payment for %s made from %s for $%.2f\n", description, vendor, Math.abs(amount));
+        System.out.printf("Payment for %s made to %s for $%.2f\n", description, vendor, Math.abs(amount));
 
     }
 

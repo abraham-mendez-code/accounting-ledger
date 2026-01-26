@@ -1,5 +1,7 @@
-package com.pluralsight.capstone;
+package com.pluralsight.capstone.util;
 
+
+import com.pluralsight.capstone.models.Transaction;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

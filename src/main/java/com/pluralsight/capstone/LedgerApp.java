@@ -1,5 +1,7 @@
 package com.pluralsight.capstone;
 
+import ui.Screen;
+
 import java.io.IOException;
 
 public class LedgerApp extends Screen {
